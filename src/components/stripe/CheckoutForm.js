@@ -1,40 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import axios from 'axios'; // Make sure to install axios
 
 const CheckoutForm = () => {
+  const [amount, setAmount] = useState(0);
   const stripe = useStripe();
   const elements = useElements();
-  
-  const handleSubmit = async (event) => {
-    // Block native form submission.
+
+  const handleSubmit = async event => {
     event.preventDefault();
-    
+
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
       return;
     }
-    
-    // Get a reference to a mounted CardElement. Elements knows how
-    // to find your CardElement because there can only ever be one of
-    // each type of element.
+
     const cardElement = elements.getElement(CardElement);
-    
-    // Use your card Element with other Stripe.js APIs
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
+
+    // Call your backend to create the PaymentIntent
+    let clientSecret;
+    try {
+      const response = await axios.post(process.env.SERVER_URL, { amount });
+      clientSecret = response.data.clientSecret;
+    } catch (error) {
+      console.error('Error creating payment intent', error);
+      return;
+    }
+
+    const {
+      error: confirmError,
+      paymentIntent: confirmedPaymentIntent,
+    } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+      },
     });
-    
-    if (error) {
-      console.log('[error]', error);
-    } else {
-      console.log('[PaymentMethod]', paymentMethod);
+
+    if (confirmError) {
+      console.log('[error]', confirmError);
+    } else if (confirmedPaymentIntent.status === 'succeeded') {
+      console.log('Money transfer successful!');
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
+      <input
+        type="number"
+        placeholder="Enter amount"
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+      />
       <CardElement
         options={{
           style: {
