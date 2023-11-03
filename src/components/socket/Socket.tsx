@@ -2,7 +2,7 @@ import {Fragment, useEffect, useState} from 'react'
 import io from 'socket.io-client';
 import './App.css'
 
-function App() {
+function Socket() {
 
     const [messageInput, setMessageInput] = useState('');
     const [receivedMessages, setReceivedMessages] = useState<any[]>([]);
@@ -10,24 +10,22 @@ function App() {
 
     const sendMessage = () => {
         if (socket && messageInput.trim() !== '') {
-            socket.emit('chatMessage', messageInput);
+            socket.emit('pingSocket', messageInput);
             setMessageInput('');
         }
     };
 
     useEffect(() => {
-        const newSocket = io('https://7f12-2c0f-2a80-2b-ff00-dd47-78e7-d716-fb2c.ngrok-free.app/');
+        const newSocket = io('https://worker-dev-v2.mystash.ng/');
+        // const newSocket = io('https://3bf1-148-252-132-173.ngrok-free.app/');
         setSocket(newSocket);
-
         newSocket.on('connect', () => {
             console.log('Connected to WebSocket server');
         });
-
-        newSocket.on('chatMessage', (message) => {
+        newSocket.on('setCompleted', (message) => {
             console.log('Received message from server:', message);
-            setReceivedMessages((prevMessages: any[]) => [...prevMessages, message]);
+            // setReceivedMessages((prevMessages: any[]) => [...prevMessages, message]);
         });
-
         return () => {
             newSocket.disconnect();
         };
@@ -59,4 +57,4 @@ function App() {
     )
 }
 
-export default App
+export default Socket
