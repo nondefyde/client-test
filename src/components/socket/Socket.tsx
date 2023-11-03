@@ -24,7 +24,7 @@ function Socket() {
         });
         newSocket.on('setCompleted', (message) => {
             console.log('Received message from server:', message);
-            // setReceivedMessages((prevMessages: any[]) => [...prevMessages, message]);
+            setReceivedMessages((prevMessages: any[]) => [...prevMessages, message]);
         });
         return () => {
             newSocket.disconnect();
