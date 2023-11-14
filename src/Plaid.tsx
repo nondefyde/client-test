@@ -5,7 +5,7 @@ import {usePlaidLink} from "react-plaid-link";
 function Plaid() {
 
     const { open, ready, error } = usePlaidLink({
-        token: 'link-sandbox-e1520764-172e-4e19-bc0f-0b9367079e4a',
+        token: 'link-sandbox-bf7b9cdd-e309-4915-b24a-c739775e6bee',
         onSuccess: (public_token, metadata) => {
             console.log('metadata ::: ', metadata);
             console.log('public_token ::: ', public_token);

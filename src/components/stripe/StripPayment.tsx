@@ -1,18 +1,18 @@
-import React from 'react';
 import { Card, CardBody, CardTitle } from 'reactstrap';
-import MyCheckoutForm from './CheckoutForm';
+import {StripePaymentForm} from './CheckoutForm.js';
 
-const StripePayment = () => {
+export const StripePayment = () => {
   return (
     <div className="row justify-content-center mt-lg-5">
+      <h1>Stripe Payment</h1>
       <div className="col-4 center mt-5">
         <Card>
           <CardBody>
             <CardTitle tag="h5">Card title</CardTitle>
             <CardBody>
-              <MyCheckoutForm
+              <StripePaymentForm
                 clientSecret={
-                  'pi_3O86enETAJmI65im0lt0J2f9_secret_hlRPPb6SIhSPeN9dnWekgE47i'
+                  'pi_3OBLSCETAJmI65im0V9TaqaI_secret_rMkhWseHp7HvNrdhOpNYxaInI'
                 }
               />
             </CardBody>
@@ -22,5 +22,3 @@ const StripePayment = () => {
     </div>
   );
 };
-
-export default StripePayment;

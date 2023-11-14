@@ -11,12 +11,12 @@ const PUBLIC_KEY =
   'pk_test_51M1us8ETAJmI65imSZeBJJ7CHjl6MD29Eprr4WFOgF5J3hBxlafK4iMlcZSYcm6q5TJlMscqnddBy5HQUTYB7tyF00fc7ks8SN';
 const stripePromise = loadStripe(PUBLIC_KEY);
 
-const CheckoutForm = ({ clientSecret }) => {
+export const CheckoutForm = ({ clientSecret }: any) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
@@ -45,6 +45,8 @@ const CheckoutForm = ({ clientSecret }) => {
   return (
     <form onSubmit={handleSubmit}>
       <CardElement />
+      <br/>
+      <br/>
       <button type="submit" disabled={!stripe}>
         Submit Payment
       </button>
@@ -53,12 +55,10 @@ const CheckoutForm = ({ clientSecret }) => {
   );
 };
 
-const StripePaymentForm = ({ clientSecret }) => {
+export const StripePaymentForm = ({ clientSecret }: any) => {
   return (
     <Elements stripe={stripePromise}>
       <CheckoutForm clientSecret={clientSecret} />
     </Elements>
   );
 };
-
-export default StripePaymentForm;
