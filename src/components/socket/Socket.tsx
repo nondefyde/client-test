@@ -15,16 +15,16 @@ function Socket() {
     };
 
     useEffect(() => {
-        const newSocket = io('https://startdev.ngrok.app/');
-        // const newSocket = io('https://worker-dev-v2.mystash.ng/');
-        // const newSocket = io('https://3bf1-148-252-132-173.ngrok-free.app/');
+        const newSocket = io('https://worker.gpd.girostack.com/');
         setSocket(newSocket);
         newSocket.on('connect', () => {
             console.log('Connected to WebSocket server');
         });
-        newSocket.on('cardAdded', (message) => {
-            console.log('Received message from server:', message);
-            // setReceivedMessages((prevMessages: any[]) => [...prevMessages, message]);
+        newSocket.on('transaction', (message) => {
+            console.log('Received transaction update from server :', message);
+        });
+        newSocket.on('pingSocket', (message) => {
+            console.log('Received ping from socket :', message);
         });
         return () => {
             newSocket.disconnect();

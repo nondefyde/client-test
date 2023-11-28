@@ -57,8 +57,10 @@ export const CheckoutForm = ({ clientSecret }: any) => {
 
 export const StripePaymentForm = ({ clientSecret }: any) => {
   return (
-    <Elements stripe={stripePromise}>
-      <CheckoutForm clientSecret={clientSecret} />
-    </Elements>
+    <div style={{marginLeft: 'auto 0'}}>
+        <Elements stripe={stripePromise}>
+            <CheckoutForm clientSecret={clientSecret} />
+        </Elements>
+    </div>
   );
 };
